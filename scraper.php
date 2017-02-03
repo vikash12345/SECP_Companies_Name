@@ -1,12 +1,13 @@
 <?php
 require 'scraperwiki.php';
 require 'scraperwiki/simple_html_dom.php';
-$MyWebsite = 'https://www.secp.gov.pk/company-name-search/?searchCriteria=Start&companyName=z';
-$html  = file_get_html($MyWebsite);
-foreach($html->find("//*[@id='address-list']/div[1]/h4")as $element){
-$Com = $element->find("h4",0)->plaintext;
-
-print $Com;
-echo '<br/>';
-}
+ $MyWebsite = 'https://www.secp.gov.pk/wp-content/themes/secp/company-results.php?companyName=z&searchCriteria=Start';
+ $xml  = simplexml_load_file($MyWebsite);
+ foreach($xml as $entry) {
+  foreach($entry->CompanyInfo as $item) {
+   $items['name'] = (string) $item->Name;
+   $items['address'] = (string) $item->OfficeAddress;
+   echo 'Name = ' . $items['name'] . '<br/>';
+  }
+ }
 ?>
